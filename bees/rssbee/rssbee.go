@@ -120,6 +120,11 @@ func (mod *RSSBee) itemHandler(feed *rss.Feed, ch *rss.Channel, newitems []*rss.
 					Type:  "string",
 					Value: newitems[i].PubDate,
 				},
+				{
+					Name:  "updated",
+					Type:  "string",
+					Value: newitems[i].Updated,
+				},
 			},
 		}
 		if newitems[i].Source != nil {
