@@ -105,9 +105,9 @@ var (
 		"TrimSpace":    strings.TrimSpace,
 		"TrimSuffix":   strings.TrimSuffix,
 		// 新增
-		"Regex": func(s string, regStr string) (string, error) {
+		"Regex": func(s []string, index int, regStr string) (string, error) {
 			reg := regexp.MustCompile(regStr)
-			matches := reg.FindStringSubmatch(s)
+			matches := reg.FindStringSubmatch(s[index])
 			if len(matches) != 2 {
 				return "", errors.New("cannot format regex")
 			}
