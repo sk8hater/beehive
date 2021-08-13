@@ -2,6 +2,8 @@ package templatehelper
 
 import (
 	"bytes"
+	"fmt"
+	"regexp"
 	"testing"
 	"text/template"
 )
@@ -73,6 +75,8 @@ func Test_FuncMap_Positive(t *testing.T) {
 
 		{`{{Replace "1234" "23" "56" -1}}`, "1564"},
 		{`{{Replace "12223" "2" "5" 1}}`, "15223"},
+
+		{`{{Regex "https://github.com/sk8hater/testBee/releases/tag/v1.10.7" "https:\\/\\/github.com\\/(.+)\\/releases\\/.+"}}`, "sk8hater/testBee"},
 		// ...
 	}
 
@@ -91,4 +95,12 @@ func Test_FuncMap_Positive(t *testing.T) {
 			}
 		})
 	}
+}
+
+func Test_Regex(t *testing.T) {
+	s := "https://github.com/sk8hater/testBee/releases/tag/v1.10.7"
+	regStr := "https:\\/\\/github.com\\/(.+)\\/releases\\/.+"
+	reg := regexp.MustCompile(regStr)
+	matches := reg.FindStringSubmatch(s)
+	fmt.Println(matches)
 }

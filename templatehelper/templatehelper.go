@@ -104,5 +104,14 @@ var (
 		"TrimRight":    strings.TrimRight,
 		"TrimSpace":    strings.TrimSpace,
 		"TrimSuffix":   strings.TrimSuffix,
+		// 新增
+		"Regex": func(s string, regStr string) (string, error) {
+			reg := regexp.MustCompile(regStr)
+			matches := reg.FindStringSubmatch(s)
+			if len(matches) != 2 {
+				return "", errors.New("cannot format regex")
+			}
+			return matches[1], nil
+		},
 	}
 )
