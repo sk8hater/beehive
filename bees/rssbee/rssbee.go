@@ -24,6 +24,7 @@
 package rssbee
 
 import (
+	"fmt"
 	"time"
 
 	rss "github.com/muesli/go-pkg-rss"
@@ -70,6 +71,13 @@ func (mod *RSSBee) itemHandler(feed *rss.Feed, ch *rss.Channel, newitems []*rss.
 		for j := range newitems[i].Enclosures {
 			enclosures = append(enclosures, newitems[i].Enclosures[j].Url)
 		}
+
+		utcTime, err := time.Parse(time.RFC3339, newitems[i].Updated)
+		if err != nil {
+			fmt.Println(err)
+		}
+		localTime := utcTime.In(time.FixedZone("Singapore", 60*60*8))
+		outputTime := localTime.Format("2006-01-02 15:04:05")
 
 		newitemEvent := bees.Event{
 			Bee:  mod.Name(),
@@ -123,7 +131,7 @@ func (mod *RSSBee) itemHandler(feed *rss.Feed, ch *rss.Channel, newitems []*rss.
 				{
 					Name:  "updated",
 					Type:  "string",
-					Value: newitems[i].Updated,
+					Value: outputTime,
 				},
 			},
 		}
