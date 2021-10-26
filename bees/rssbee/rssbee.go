@@ -79,6 +79,12 @@ func (mod *RSSBee) itemHandler(feed *rss.Feed, ch *rss.Channel, newitems []*rss.
 		localTime := utcTime.In(time.FixedZone("Singapore", 60*60*8))
 		outputTime := localTime.Format("2006-01-02 15:04:05")
 
+		// 只发今天的
+		nowTime := time.Now().In(time.FixedZone("Singapore", 60*60*8))
+		if nowTime.Sub(localTime) > 24*time.Hour {
+			continue
+		}
+
 		newitemEvent := bees.Event{
 			Bee:  mod.Name(),
 			Name: "new_item",
